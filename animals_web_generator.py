@@ -1,4 +1,7 @@
 from data.data_service import load_data
+from animals_file_management import read_html_template, write_html_content
+
+
 
 animals_data = load_data()
 
@@ -10,8 +13,9 @@ fields_to_print = {
 
 }
 
+output = ''
+
 for animal in animals_data:
-    print()
     for field, handler in fields_to_print.items():
 
         if '_' in field:
@@ -26,4 +30,10 @@ for animal in animals_data:
         if value is not None:
             processed = handler(value)
             if processed:
-                print(f"{actual_key}: {processed}")
+                output += f"{actual_key.title()}: {processed.title()} \n"
+
+
+html_template = read_html_template()
+html_template = html_template.replace('__REPLACE_ANIMALS_INFO__', output)
+write_html_content(html_template)
+
