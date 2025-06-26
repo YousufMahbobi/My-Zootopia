@@ -16,6 +16,7 @@ fields_to_print = {
 output = ''
 
 for animal in animals_data:
+    output += '<li class="cards__item">\n'
     for field, handler in fields_to_print.items():
 
         if '_' in field:
@@ -30,8 +31,9 @@ for animal in animals_data:
         if value is not None:
             processed = handler(value)
             if processed:
-                output += f"{actual_key.title()}: {processed.title()} \n"
+                output += f"{actual_key.title()}: {processed.title()} <br/>"
 
+    output += '</li>\n'
 
 html_template = read_html_template()
 html_template = html_template.replace('__REPLACE_ANIMALS_INFO__', output)
