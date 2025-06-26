@@ -6,7 +6,6 @@ from animals_file_management import read_html_template, write_html_content
 animals_data = load_data()
 
 fields_to_print = {
-    "name": lambda x: x,
     "characteristics_diet": lambda x: x['diet']  if isinstance(x, dict) and x.get('diet') else None,
     "locations": lambda x: x[0] if isinstance(x, list) and x else None,
     "characteristics_type": lambda x: x['type'] if isinstance(x, dict) and x.get('type') else None,
@@ -16,9 +15,11 @@ fields_to_print = {
 output = ''
 
 for animal in animals_data:
-    output += '<li class="cards__item">\n'
-    for field, handler in fields_to_print.items():
+    output += '<li class="cards__item">'
+    output += f'<div class="card__title">{animal["name"]}</div>'
+    output += '<p class="card__text">'
 
+    for field, handler in fields_to_print.items():
         if '_' in field:
             field = field.split('_')
             base_key = field[0]
@@ -31,8 +32,9 @@ for animal in animals_data:
         if value is not None:
             processed = handler(value)
             if processed:
-                output += f"{actual_key.title()}: {processed.title()} <br/>"
+                    output += f"<strong>{actual_key.title()}:</strong> {processed} <br/>"
 
+    output += '</p>'
     output += '</li>\n'
 
 html_template = read_html_template()
